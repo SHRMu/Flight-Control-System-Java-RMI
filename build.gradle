@@ -1,0 +1,55 @@
+plugins {
+  id 'java'
+}
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+def currentOS = org.gradle.internal.os.OperatingSystem.current()
+def platform
+if (currentOS.isWindows()) {
+    platform = 'win'
+} else if (currentOS.isLinux()) {
+    platform = 'linux'
+} else if (currentOS.isMacOsX()) {
+    platform = 'mac'
+}
+
+// In this section you declare the required dependencies of your project
+dependencies {
+    compile 'org.apache.commons:commons-math3:3.6.1'
+	// https://mvnrepository.com/artifact/org.openjfx/javafx
+	compile "org.openjfx:javafx-base:11:${platform}"
+    compile "org.openjfx:javafx-graphics:11:${platform}"
+    compile "org.openjfx:javafx-controls:11:${platform}"
+    compile "org.openjfx:javafx-fxml:11:${platform}"
+}
+
+
+sourceSets {
+	main {
+		java {
+			srcDirs= ["src/main/java"]
+		}
+		resources {
+			srcDirs= ["src/main/resources"]
+		}
+	}
+}
+
+task runServer(type: JavaExec) {
+	description = 'Run Server'
+	classpath = sourceSets.main.runtimeClasspath
+
+	main = 'Server'
+}
+
+task runClient(type: JavaExec) {
+	description = 'Run Client'
+	classpath = sourceSets.main.runtimeClasspath
+
+	main = 'Client'
+}
